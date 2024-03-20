@@ -1,0 +1,70 @@
+name: Publish Configurations on Release
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: npm install
+
+      - uses: actions/cache@v3
+        name: Setup npm cache
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Setup Git
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Generate tag and release body
+        run: |
+          npm run release
+
+      - name: Publish tag
+        id: publish_tag
+        run: |
+          git push --follow-tags origin develop
+          echo ::set-output name=tag::$(git describe HEAD --abbrev=0)
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_name: Release ${{ steps.publish_tag.outputs.tag }}
+          tag_name: ${{ steps.publish_tag.outputs.tag }}
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
+
+      - name: Login to npm
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - name: Publish Configuration to NPM
+        run: npm publish --verbose --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
