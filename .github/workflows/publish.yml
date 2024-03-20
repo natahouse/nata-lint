@@ -38,15 +38,15 @@ jobs:
       - name: Tag
         id: tag
         run: |
-          echo ::set-output name=tag::$(git describe HEAD --abbrev=0)
+          echo ::set-output name=tag::$()
 
       - name: Create Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          release_name: Release ${{ steps.tag.outputs.tag }}
-          tag_name: ${{ steps.tag.outputs.tag }}
+          release_name: Release git describe HEAD --abbrev=0
+          tag_name: git describe HEAD --abbrev=0
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
