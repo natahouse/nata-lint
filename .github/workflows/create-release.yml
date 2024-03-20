@@ -43,4 +43,5 @@ jobs:
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \
               --title="Release ${tag#v}" \
-              --notes-file CHANGELOG.md
+              --notes-file CHANGELOG.md \
+              --draft
