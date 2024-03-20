@@ -35,15 +35,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
-      - name: Create release
+      - name: Tag Name
+        id: set_tag
+        run: |
+          echo ::set-output name=tag::$(git describe HEAD --abbrev=0)
+
+      - name: Create Release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }}
-        run: |
-          gh release create "$tag" \
-              --repo="$GITHUB_REPOSITORY" \
-              --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
-              --notes-file CHANGELOG.md
+        with:
+          release_name: Release ${{ steps.tag.outputs.tag }}
+          tag_name: ${{ steps.tag.outputs.tag }}
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
 
       - name: Login to npm
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
