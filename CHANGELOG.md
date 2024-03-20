@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/natahouse/nata-lint/compare/v1.2.0...v1.3.0) (2024-03-20)
+
+
+### Features
+
+* add workflow to create release and workflow to publish ([168a420](https://github.com/natahouse/nata-lint/commit/168a4201928980b53287846ac45f10a6a4453a57))
+* use gh actions to create release ([f0f662f](https://github.com/natahouse/nata-lint/commit/f0f662f9069c70a39cd23ed5f742cd3a4c3a2167))
+
+
+### Bug Fixes
+
+* create release in draft mode ([8422534](https://github.com/natahouse/nata-lint/commit/842253421d72345b8b46460336de165c1eec7eed))
+
 ## 1.2.0 (2024-03-20)
 
 

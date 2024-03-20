@@ -1,9 +1,9 @@
-name: Publish Configurations on Release
+name: Create Release
 
 on:
-  release:
-    types:
-      - "released"
+  push:
+    tags:
+      - "v*"
 
 permissions:
   contents: write
@@ -35,10 +35,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
-      - name: Login to npm
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
-      - name: Publish Configuration to NPM
-        run: npm publish --verbose --access public
+      - name: Create release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh release create "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="Release ${tag#v}" \
+              --notes-file CHANGELOG.md \
+              --draft
