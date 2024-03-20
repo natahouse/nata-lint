@@ -35,11 +35,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
-      - name: Tag
-        id: tag
-        run: |
-          echo ::set-output name=tag::$()
-
       - name: Create Release
         uses: actions/create-release@v1
         env:
