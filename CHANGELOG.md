@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file. See [standa
 * add publish workflow ([0e16207](https://github.com/natahouse/nata-lint/commit/0e16207e9564a8c4ec1cb5770348c18d3d194a9f))
 * add publish workflow ([9fa76bc](https://github.com/natahouse/nata-lint/commit/9fa76bc961d6b47e439a76b1cd754f85a2422300))
 * add versionrc ([7b4c5d8](https://github.com/natahouse/nata-lint/commit/7b4c5d867c516f38a10dea4752b67ab2746fcdf9))
+* unify publish workflow ([8ec1e01](https://github.com/natahouse/nata-lint/commit/8ec1e0117d8ffa125a9f51596fc62306a0a3fec4))
 
 
 ### Bug Fixes
